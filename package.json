@@ -5,6 +5,8 @@
 	"type": "module",
 	"scripts": {
 		"dev": "vite",
+		"dev:web": "vite --mode web",
+		"dev:pc": "vite --mode pc",
 		"build:pc-prod": "vite build --mode pc && electron-builder",
 		"build:web-prod": "vite build --mode web",
 		"preview": "vite preview"

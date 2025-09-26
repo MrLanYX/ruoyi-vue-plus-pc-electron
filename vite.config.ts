@@ -1,10 +1,12 @@
 import { defineConfig, loadEnv } from "vite";
 import createPlugins from "./vite/plugins";
 import path from "node:path";
+import { log } from "node:console";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode, command }) => {
 	const env = loadEnv(mode, process.cwd());
+	log(`当前运行模式: ${mode}`);
 	return {
 		// 部署生产环境和开发环境下的URL。
 		// 默认情况下，vite 会假设你的应用是被部署在一个域名的根路径上
@@ -26,7 +28,7 @@ export default defineConfig(({ mode, command }) => {
 			command === "serve"
 		),
 		server:
-			command === "serve" &&
+			mode !== "pc" &&
 			(() => {
 				return {
 					host: "0.0.0.0",
@@ -34,7 +36,7 @@ export default defineConfig(({ mode, command }) => {
 					open: true,
 					proxy: {
 						[env.VITE_APP_BASE_API]: {
-							target: "http://localhost:8080",
+							target: "http://0.0.0.0:8084",// 开发时代理的后端地址
 							changeOrigin: true,
 							ws: true,
 							rewrite: (path) =>
